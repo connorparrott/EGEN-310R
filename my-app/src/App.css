@@ -7,9 +7,10 @@
 }
 
 .Body {
+  font-size: 36px;
 }
 
-.Manual {
+.button {
   font-size: 36px;
   width: 50%;
   height: 100px;
@@ -18,6 +19,7 @@
 
 .gauge-container {
   margin-left: 30%;
+  margin-bottom: 10%;
   width: 40%;
   height: 20px;
   background-color: #eee;
@@ -37,4 +39,5 @@
   display: block;
   margin-top: 10px;
   font-weight: bold;
+  font-size: 36px;
 }

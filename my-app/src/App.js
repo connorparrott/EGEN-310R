@@ -1,54 +1,67 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
-// Get the gauge element
-const gauge = document.querySelector('.gauge');
-
-// Get the amount element
-const amountElement = document.getElementById('amount');
-
-// Decrease the amount and update the gauge width
-function decreaseAmount() {
-    let amount = parseInt(amountElement.textContent);
-    if (amount > 0) {
-        amount--;
-        amountElement.textContent = amount;
-        gauge.style.width = amount + '%';
-    }
-}
-
-// Attach the decreaseAmount function to a button or any other event
-const decreaseButton = document.getElementById('decrease-button');
-decreaseButton.addEventListener('click', decreaseAmount);
 function App() {
-  return (
-    <div className="App">
-      <div className={"Header"}>
-          <h1>Automated Pet Feeder</h1>
-      </div>
+    const amountElement = React.useRef(null);
+    const gauge = React.useRef(null);
 
-        <div className={"Body"}>
-            <div className={"Preferences"}>
+    function decreaseAmount() {
+        let amount = parseInt(amountElement.current.textContent);
+        if (amount > 0) {
+            amount--;
+            amountElement.current.textContent = amount;
+            gauge.current.style.width = amount + '%';
+        }
+    }
+
+    function manualFeed() {
+        decreaseAmount();
+        alert('Your pet has been fed');
+    }
+
+    function refillFood() {
+        let amount = 100; // Replace with actual sensor value
+        amountElement.current.textContent = amount;
+        gauge.current.style.width = amount + '%';
+    }
+
+    React.useEffect(() => {
+        const decreaseButton = document.getElementById('decrease-button');
+        const refillButton = document.getElementById('refill-button');
+
+        decreaseButton.addEventListener('click', decreaseAmount);
+        refillButton.addEventListener('click', refillFood);
+    }, []);
+
+    return (
+        <div className="App">
+            <div className="Header">
+                <h1>Automated Pet Feeder</h1>
             </div>
-            <div>
-                Food Remaining: {amountElement}
-            </div>
-            <div className="gauge-container">
-                <div className="gauge"></div>
-                <span className="gauge-label">Amount: <span id="amount">100</span></span>
-            </div>
-            <div>
-                <button id="decrease-button">Decrease</button>
-            </div>
-            <div>
-                <button className="Manual">Feed Now</button>
-            </div>
-            <div className={"Alarms"}>
-                Alarms and Alerts
+            <div className="Body">
+                <div className="Preferences"></div>
+                <div>Food Remaining: <span ref={amountElement}>100</span></div>
+                <div className="gauge-container">
+                    <div className="gauge" ref={gauge}></div>
+                    <span className="gauge-label">
+            Amount: <span id="amount">100</span>
+          </span>
+                </div>
+                <div>
+                    <button className="increment-button" id="refill-button">
+                        Refill
+                    </button>
+                    <button className={"decrease-button"} id={"decrease-button"}>Decrease</button>
+                </div>
+                <div>
+                    <button className="button" id="manual-button" onClick={manualFeed}>
+                        Feed Now
+                    </button>
+                </div>
+                <div className="Alarms">Alarms and Alerts</div>
             </div>
         </div>
-    </div>
-  );
+    );
 }
 
 export default App;
